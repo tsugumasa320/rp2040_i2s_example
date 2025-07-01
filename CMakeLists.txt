@@ -1,3 +1,22 @@
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+
+set(sdkVersion 2.1.1)
+set(toolchainVersion 14_2_Rel1)
+set(picotoolVersion 2.1.1)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+
+if(EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+
+# ====================================================================================
+set(PICO_BOARD pico2 CACHE STRING "Board type")
+
 # CMakeLists.txt
 #
 # Copyright (c) 2022 Daniel Collins
@@ -16,15 +35,13 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # rp2040_i2s_example. If not, see <https://www.gnu.org/licenses/>.
-
 cmake_minimum_required(VERSION 3.13)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
-
 # Set standard CMake build type options
-## Default C compiler flags
+# # Default C compiler flags
 set(CMAKE_C_FLAGS_DEBUG_INIT "-g3 -Og -Wall -Wextra -DDEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG_INIT}" CACHE STRING "" FORCE)
 set(CMAKE_C_FLAGS_RELEASE_INIT "-O3 -Wall")
@@ -33,7 +50,8 @@ set(CMAKE_C_FLAGS_MINSIZEREL_INIT "-Os -Wall")
 set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL_INIT}" CACHE STRING "" FORCE)
 set(CMAKE_C_FLAGS_RELWITHDEBINFO_INIT "-O2 -g -Wall")
 set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_ASM_FLAGS_RELWITHDEBINFO_INIT}" CACHE STRING "" FORCE)
-## Default C++ compiler flags
+
+# # Default C++ compiler flags
 set(CMAKE_CXX_FLAGS_DEBUG_INIT "-g3 -Og -Wall -Wextra -DDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG_INIT}" CACHE STRING "" FORCE)
 set(CMAKE_CXX_FLAGS_RELEASE_INIT "-O3 -Wall")
@@ -59,7 +77,6 @@ pico_set_program_version(i2s_example "1.0.1")
 
 # no_flash means the target is to run from RAM
 # pico_set_binary_type(i2s_test no_flash)
-
 pico_enable_stdio_uart(i2s_example 1)
 pico_enable_stdio_usb(i2s_example 0)
 
@@ -68,10 +85,10 @@ target_link_libraries(i2s_example pico_stdlib)
 
 # Add any user requested libraries
 target_link_libraries(i2s_example
-        hardware_i2c
-        hardware_dma
-        hardware_pio
-        hardware_clocks
-        )
+    hardware_i2c
+    hardware_dma
+    hardware_pio
+    hardware_clocks
+)
 
 pico_add_extra_outputs(i2s_example)
